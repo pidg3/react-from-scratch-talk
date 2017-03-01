@@ -1,12 +1,12 @@
 const SQUARES_TO_RENDER = 2000;
 
-class MiniReactComponent {
+class GraphiteComponent {
   constructor(props) {
     this.props = props
   }
 }
 
-class SquaresDemo extends React.Component {
+class SquaresDemo extends GraphiteComponent {
   render() {
     let squares = []
     for (let i = 0; i < SQUARES_TO_RENDER; i++) {
@@ -28,7 +28,7 @@ class SquaresDemo extends React.Component {
   }
 }
 
-class ColorSquare extends React.Component {
+class ColorSquare extends GraphiteComponent {
   render() {
     var list = this.props.list
     return (
@@ -38,7 +38,7 @@ class ColorSquare extends React.Component {
   }
 }
 
-class Counter extends React.Component {
+class Counter extends GraphiteComponent {
   render() {
     return (<div class="counter-box">
       <span>{this.props.count}</span>

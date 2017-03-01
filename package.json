@@ -1,0 +1,20 @@
+{
+  "name": "react-from-scratch",
+  "version": "1.0.0",
+  "description": "Demo on naive react rendering",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m SimpleHTTPServer",
+    "build": "babel src.js > dist.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "babel-cli": "^6.23.0",
+    "babel-plugin-syntax-dynamic-import": "^6.18.0",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.23.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-react-jsx": "^6.23.0"
+  },
+  "author": "",
+  "license": "ISC"
+}

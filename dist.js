@@ -22,7 +22,7 @@ class SquaresDemo extends GraphiteComponent {
       createGraphiteElement(Counter, { count: superSimpleState.count }),
       createGraphiteElement(
         "div",
-        { "class": "container" },
+        { className: "container" },
         squares
       )
     );
@@ -32,7 +32,7 @@ class SquaresDemo extends GraphiteComponent {
 class ColorSquare extends GraphiteComponent {
   render() {
     var list = this.props.list;
-    return createGraphiteElement("div", { id: "test-square", "class": this.props.className });
+    return createGraphiteElement("div", { id: "test-square", className: this.props.className });
   }
 }
 
@@ -40,7 +40,7 @@ class Counter extends GraphiteComponent {
   render() {
     return createGraphiteElement(
       "div",
-      { "class": "counter-box" },
+      { className: "counter-box" },
       createGraphiteElement(
         "span",
         null,

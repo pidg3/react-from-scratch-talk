@@ -20,7 +20,7 @@ class SquaresDemo extends GraphiteComponent {
     return (
       <div>
         <Counter count={superSimpleState.count} />
-        <div class="container">
+        <div className="container">
           {squares}
         </div>
       </div>
@@ -32,7 +32,7 @@ class ColorSquare extends GraphiteComponent {
   render() {
     var list = this.props.list
     return (
-      <div id="test-square" class={this.props.className}>
+      <div id="test-square" className={this.props.className}>
       </div>
     )
   }
@@ -40,7 +40,7 @@ class ColorSquare extends GraphiteComponent {
 
 class Counter extends GraphiteComponent {
   render() {
-    return (<div class="counter-box">
+    return (<div className="counter-box">
       <span>{this.props.count}</span>
     </div>);
   }

@@ -7,7 +7,10 @@
     "start": "python -m SimpleHTTPServer",
     "build": "babel src.js > dist.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
   "devDependencies": {
     "babel-cli": "^6.23.0",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",

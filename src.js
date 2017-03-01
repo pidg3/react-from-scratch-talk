@@ -1,8 +1,4 @@
-/*
-  > 1000 and it starts to really crawl
-  < 100 and it is reasonably performant
-*/
-const SQUARES_TO_RENDER = 100;
+const SQUARES_TO_RENDER = 2000;
 
 class MiniReactComponent {
   constructor(props) {
@@ -10,15 +6,15 @@ class MiniReactComponent {
   }
 }
 
-class SquaresDemo extends MiniReactComponent {
+class SquaresDemo extends React.Component {
   render() {
     let squares = []
     for (let i = 0; i < SQUARES_TO_RENDER; i++) {
       if (i % 2 == 0) {
-        squares.push(<ColorSquare className="red-square" />)
+        squares.push(<ColorSquare className="red-square" key={i} />)
       }
       else {
-        squares.push(<ColorSquare className="blue-square" />)
+        squares.push(<ColorSquare className="blue-square" key={i} />)
       }
     }
     return (
@@ -32,7 +28,7 @@ class SquaresDemo extends MiniReactComponent {
   }
 }
 
-class ColorSquare extends MiniReactComponent {
+class ColorSquare extends React.Component {
   render() {
     var list = this.props.list
     return (
@@ -42,7 +38,7 @@ class ColorSquare extends MiniReactComponent {
   }
 }
 
-class Counter extends MiniReactComponent {
+class Counter extends React.Component {
   render() {
     return (<div class="counter-box">
       <span>{this.props.count}</span>
@@ -54,10 +50,10 @@ let superSimpleState = {
   count: 0
 }
 
-// setInterval(() => {
-//   superSimpleState.count++;
-//   tick();
-// }, 10);
+setInterval(() => {
+  superSimpleState.count++;
+  tick();
+}, 10);
 
 // The element we want to render into
 var target = document.getElementById('mount')
@@ -95,125 +91,122 @@ function createGraphiteElement(type, props = {}) {
       var child = children[i]
       // Render text only base nodes
       if( child && typeof(child) != 'object' ) {
-        children[i] = dom( 'span', null, child.toString() )
+        children[i] = createGraphiteElement( 'span', null, child.toString() )
       }
     }
   }
   return { type: type, props: props, children: children }
 }
 
-const demoColorSquare = new ColorSquare({ className: 'red'});
-console.log(demoColorSquare);
-//
-// function prepare( tree, depth ) {
-//   depth = depth || [0]
-//   if( Array.isArray( tree ) ) {
-//     // recursively prepare arrays of elements (children)
-//     for( var i in tree ) {
-//       tree[i] = prepare( tree[i]||' ', depth.concat( parseInt(i) ) )
-//     }
-//   }
-//   else {
-//     // 'tree' is a single element object
-//
-//     // calculate depth/unique path to element
-//     // for tracking purposes
-//     tree._depth = depth
-//
-//     // prepare children
-//     if( tree.children ) {
-//       tree.children = prepare( tree.children, depth )
-//     }
-//   }
-//   return tree
-// }
-//
-// function renderNodes( nodes, target ) {
-//   if( Array.isArray( nodes ) ) {
-//     for( var i in nodes ) {
-//       renderNodes( nodes[i], target )
-//     }
-//   }
-//   else {
-//     // actually just a single node
-//     var node = nodes
-//
-//     if( node === null ) {
-//       // whitespace between elements
-//       target.appendChild( document.createTextNode(' ') )
-//     }
-//     else if( typeof( node ) === 'string' || typeof( node ) === 'number' ) {
-//       // at the bottom of the tree we have plain
-//       // text nodes, they are guaranteed to be single
-//       // children, so just set inner html of the container
-//       if( target.innerHTML !== node ) { target.innerHTML = node }
-//     }
-//     else {
-//       var el
-//
-//       // find existing node first if possible
-//       var dataId = 'ui.'+node._depth.join('.')
-//       var existing = target.querySelector(
-//         node.tag + '[data-ui-id="'+dataId+'"]'
-//       )
-//
-//       // the relative depth of this node in its container
-//       var relativeDepth = node._depth[node._depth.length-1]
-//       // the node at the same location in the existing DOM
-//       // if there is one
-//       var nodeAtSameLocation = target.children[relativeDepth]
-//
-//       // if there's no existing node, or the node at the correct
-//       // place is not the *same* node, then we need a new one
-//       // to replace it with
-//       if( !existing || nodeAtSameLocation && !nodeAtSameLocation.isSameNode(existing) ) {
-//         el = document.createElement( node.tag )
-//         el.dataset.uiId = dataId
-//       }
-//       else {
-//         el = existing
-//       }
-//
-//       // various annoying attribute handling
-//       // IRL there would be a lot more stuff here
-//       if( node.attrs ) {
-//         var mapping = { className: 'class' }
-//         var special = [ 'onChange', 'onClick', 'value' ]
-//         for( var i in node.attrs ) {
-//           if( special.indexOf(i) != -1 ) { continue }
-//           el.setAttribute( mapping[i]||i, node.attrs[i] )
-//         }
-//         if( node.attrs.onChange ) { el.onkeyup = node.attrs.onChange }
-//         if( node.attrs.onClick ) { el.onclick = node.attrs.onClick }
-//         if( node.attrs.onSubmit ) { el.onsubmit = node.attrs.onSubmit }
-//         if( node.attrs.value ) { el.value = node.attrs.value }
-//       }
-//
-//       // recursively render the children of this node
-//       if( node.children ) {
-//         renderNodes( node.children, el )
-//
-//         // after rendering children at this depth
-//         // we need to clean up extra old nodes
-//         // because otherwise they will get left around
-//         // untouched (we aren't 'diffing' just brute-forcing)
-//         if( el.children.length > node.children.length ) {
-//           var stop = node.children.length
-//           for( var i = el.children.length; i > stop; i-- ) {
-//             el.removeChild( el.children[i-1] )
-//           }
-//         }
-//       }
-//
-//       // if we have no existing node, we just need
-//       // to append the new one
-//       if( !existing ) { target.appendChild( el ) }
-//       // otherwise drop in the new node, which might be a no-op
-//       else { target.replaceChild( existing, el ) }
-//     }
-//   }
-// }
-//
-// function renderToDOM( tree, container ) {
-//   return renderNodes( prepare(tree), container )
-// }
+function prepare( tree, depth ) {
+  depth = depth || [0]
+  if( Array.isArray( tree ) ) {
+    // recursively prepare arrays of elements (children)
+    for( var i in tree ) {
+      tree[i] = prepare( tree[i]||' ', depth.concat( parseInt(i) ) )
+    }
+  }
+  else {
+    // 'tree' is a single element object
+
+    // calculate depth/unique path to element
+    // for tracking purposes
+    tree._depth = depth
+
+    // prepare children
+    if( tree.children ) {
+      tree.children = prepare( tree.children, depth )
+    }
+  }
+  return tree
+}
+
+function renderNodes( nodes, target ) {
+  if( Array.isArray( nodes ) ) {
+    for( var i in nodes ) {
+      renderNodes( nodes[i], target )
+    }
+  }
+  else {
+    // actually just a single node
+    var node = nodes
+
+    if( node === null ) {
+      // whitespace between elements
+      target.appendChild( document.createTextNode(' ') )
+    }
+    else if( typeof( node ) === 'string' || typeof( node ) === 'number' ) {
+      // at the bottom of the tree we have plain
+      // text nodes, they are guaranteed to be single
+      // children, so just set inner html of the container
+      if( target.innerHTML !== node ) { target.innerHTML = node }
+    }
+    else {
+      var el
+
+      // find existing node first if possible
+      var dataId = 'ui.'+node._depth.join('.')
+      var existing = target.querySelector(
+        node.type + '[data-ui-id="'+dataId+'"]'
+      )
+
+      // the relative depth of this node in its container
+      var relativeDepth = node._depth[node._depth.length-1]
+      // the node at the same location in the existing DOM
+      // if there is one
+      var nodeAtSameLocation = target.children[relativeDepth]
+
+      // if there's no existing node, or the node at the correct
+      // place is not the *same* node, then we need a new one
+      // to replace it with
+      if( !existing || nodeAtSameLocation && !nodeAtSameLocation.isSameNode(existing) ) {
+        el = document.createElement( node.type )
+        el.dataset.uiId = dataId
+      }
+      else {
+        el = existing
+      }
+
+      // various annoying attribute handling
+      // IRL there would be a lot more stuff here
+      if( node.props ) {
+        var mapping = { className: 'class' }
+        var special = [ 'onChange', 'onClick', 'value' ]
+        for( var i in node.props ) {
+          if( special.indexOf(i) != -1 ) { continue }
+          el.setAttribute( mapping[i]||i, node.props[i] )
+        }
+        if( node.props.onChange ) { el.onkeyup = node.props.onChange }
+        if( node.props.onClick ) { el.onclick = node.props.onClick }
+        if( node.props.onSubmit ) { el.onsubmit = node.props.onSubmit }
+        if( node.props.value ) { el.value = node.props.value }
+      }
+
+      // recursively render the children of this node
+      if( node.children ) {
+        renderNodes( node.children, el )
+
+        // after rendering children at this depth
+        // we need to clean up extra old nodes
+        // because otherwise they will get left around
+        // untouched (we aren't 'diffing' just brute-forcing)
+        if( el.children.length > node.children.length ) {
+          var stop = node.children.length
+          for( var i = el.children.length; i > stop; i-- ) {
+            el.removeChild( el.children[i-1] )
+          }
+        }
+      }
+
+      // if we have no existing node, we just need
+      // to append the new one
+      if( !existing ) { target.appendChild( el ) }
+      // otherwise drop in the new node, which might be a no-op
+      else { target.replaceChild( existing, el ) }
+    }
+  }
+}
+
+function renderToDOM( tree, container ) {
+  return renderNodes( prepare(tree), container )
+}
